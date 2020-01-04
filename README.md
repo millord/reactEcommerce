@@ -1,4 +1,4 @@
-# This is the cliente side of the ecommerce app
+# This is the client side of the ecommerce app
 
 
 ## It was built using React.js :rocket:
