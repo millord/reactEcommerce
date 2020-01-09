@@ -34,9 +34,13 @@ const Signup = () => {
       });
   };
 
+  //   fetch("http://localhost:8000/api/signup")
+  //     .then(response => response.text())
+  //     .then(text => console.log(text));
+  // };
   const clickSubmit = event => {
     event.preventDefault();
-    signup(name, email, password);
+    signup({ name, email, password });
   };
 
   const signUpForm = () => {
@@ -48,6 +52,7 @@ const Signup = () => {
             onChange={handleChange("name")}
             type="text"
             className="form-control"
+            value={name}
           />
         </div>
         <div className="form-group">
@@ -56,6 +61,7 @@ const Signup = () => {
             onChange={handleChange("email")}
             type="email"
             className="form-control"
+            value={email}
           />
         </div>
         <div className="form-group">
@@ -64,6 +70,7 @@ const Signup = () => {
             onChange={handleChange("password")}
             type="password"
             className="form-control"
+            value={password}
           />
         </div>
         <button onClick={clickSubmit} className="btn btn-primary">
@@ -81,6 +88,7 @@ const Signup = () => {
     >
       {signUpForm()}
       {JSON.stringify(values)}
+      {API}
     </Layout>
   );
 };
