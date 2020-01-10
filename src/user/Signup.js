@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../core/Layout";
 import { API } from "../config";
 
@@ -8,17 +9,17 @@ const Signup = () => {
     email: "",
     password: "",
     error: "",
-    succes: false
+    success: false
   });
 
-  const { name, email, password } = values;
+  const { name, email, password, error, success } = values;
 
   const handleChange = name => event => {
     setValues({ ...values, error: false, [name]: event.target.value });
   };
 
   const signup = user => {
-    fetch(`${API}/signup`, {
+    return fetch(`${API}/signup`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -34,13 +35,23 @@ const Signup = () => {
       });
   };
 
-  //   fetch("http://localhost:8000/api/signup")
-  //     .then(response => response.text())
-  //     .then(text => console.log(text));
-  // };
   const clickSubmit = event => {
     event.preventDefault();
-    signup({ name, email, password });
+    setValues({ ...values, error: false });
+    signup({ name, email, password }).then(data => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, success: false });
+      } else {
+        setValues({
+          ...values,
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          success: true
+        });
+      }
+    });
   };
 
   const signUpForm = () => {
@@ -80,15 +91,33 @@ const Signup = () => {
     );
   };
 
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
+    >
+      {error}
+    </div>
+  );
+
+  const showSuccess = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: success ? "" : "none" }}
+    >
+      New Account was created. Please <Link to="/signin">Signin</Link>.
+    </div>
+  );
+
   return (
     <Layout
       title="Signup"
       description="Signup to Node React E-commerce App Signup"
       className="container col-md-8 offset-md-2"
     >
+      {showSuccess()}
+      {showError()}
       {signUpForm()}
-      {JSON.stringify(values)}
-      {API}
     </Layout>
   );
 };
